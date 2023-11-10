@@ -1,0 +1,31 @@
+# The limitForPeriod and limitRefreshPeriod configurations together determine the rate (2rps).
+# The timeoutDuration configuration specifies the time we are willing to wait to acquire permission
+# from the RateLimiter before error out.
+
+management:
+  health:
+    ratelimiters:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      limitForPeriod: 2
+      limitRefreshPeriod: 1s
+      timeoutDuration: 0s
+  instances:
+    basic:
+      baseConfig: default
+
+#/actuator/health
+#/actuator/ratelimiterevents
+#/actuator/ratelimiters
+#/actuator/metrics/resilience4j.ratelimiter.available.permissions
+#/actuator/metrics/resilience4j.ratelimiter.waiting_threads
